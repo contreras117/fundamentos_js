@@ -214,3 +214,19 @@ function fight (fighter1, fighter2)
 
 /* Pelea por turnos con clases */
  
+
+/* Fechas */
+
+/* Los meses van del 0 al 11 */
+const nacimiento = new Date(1992, 7, 21); 
+
+/* Regresa la fecha actual */
+const today = new Date();
+
+today.getFullYear(); /* Devuelve el año de la fecha */
+today.getMonth(); /* Devuelve el mes de la fecha. Del 0 al 11 */
+today.getDay(); /* Devuelve el dia de la semana. Del 0 al 6 */
+today.getDate(); /* Devuelve el dia del mes */
+
+
+/* Fechas */
