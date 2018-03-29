@@ -28,7 +28,7 @@ function condicion (x, y, z = false)
 condicion(2);
 
 
-/* Manejo de Strings */
+/* -----------------------------------------------------------------------------Manejo de Strings---------------------------------------------------------------------------- */
 
 const platzom = (str) => 
 {
@@ -74,10 +74,10 @@ const platzom = (str) =>
 }
 
 
-/* Manejo de Strings */
+/* -----------------------------------------------------------------------------Manejo de Strings---------------------------------------------------------------------------- */
 
 
-/* Pelea por turnos */
+/* -----------------------------------------------------------------------------------------------------------Pelea por turnos-------------------------------------------------------------- */
 
 let lifeGoku = 100;
 let lifeSuperman = 100;
@@ -123,10 +123,10 @@ else
 }
 
 
-/* Pelea por turnos */
+/* -----------------------------------------------------------------------------------------------------------Pelea por turnos-------------------------------------------------------------- */
 
 
-/* Pelea por turnos con clases */
+/* --------------------------------------------------------------------------------------------------------Pelea por turnos con clases-------------------------------------------------------- */
 
 class Fighter
 {
@@ -212,10 +212,10 @@ function fight (fighter1, fighter2)
 }
 
 
-/* Pelea por turnos con clases */
+/* --------------------------------------------------------------------------------------------------------Pelea por turnos con clases-------------------------------------------------------- */
  
 
-/* Fechas */
+/* --------------------------------------------------------------------------------------------------------Manejo de Fechas-------------------------------------------------------------------- */
 
 /* Los meses van del 0 al 11 */
 const nacimiento = new Date(1992, 7, 21); 
@@ -229,4 +229,206 @@ today.getDay(); /* Devuelve el dia de la semana. Del 0 al 6 */
 today.getDate(); /* Devuelve el dia del mes */
 
 
-/* Fechas */
+/* --------------------------------------------------------------------------------------------------------Manejo de Fechas-------------------------------------------------------------------- */
+
+
+
+/* ---------------------------------------------------------------------------------------------------Declaracion manual de objetos------------------------------------------------------------ */
+const p1 ={
+  x:0,
+  y:4,
+  moveOnX (incX) 
+  {
+    this.x += incX;
+  },
+  moveOnY (incY) 
+  {
+    this.y += incY;
+  }
+}
+
+const p2 ={
+  x:3,
+  y:0,
+  moveOnX (incX) 
+  {
+    this.x += incX;
+  },
+  moveOnY (incY) 
+  {
+    this.y += incY;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------------Declaracion manual de objetos------------------------------------------------------------ */
+
+
+
+
+/* -----------------------------------------------------------------------------------------------Clases (Sintaxis sugar)--------------------------------------------------------------------- */
+
+/* Funcionan igual que los prototipos. Tienen sus mismas caracteristicas,
+solo es una manera mas sencilla de escribirlos. */
+class Algo
+{
+  constructor (x,y)
+  {
+    this._x = x;
+    this._y = y;
+  }
+
+  get x ()
+  {
+    return this._x;
+  }
+
+  get y ()
+  {
+    return this._y;
+  }
+
+  moveOnX (incX)
+  {
+    this._x += incX;
+  }
+
+  moveOnY (incY)
+  {
+    this._y += incY;
+  }
+
+  distancia (p)
+  {
+    return Math.sqrt( Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2) ).toFixed(2);
+  }
+}
+
+
+class Punto 
+{
+  constructor (x,y)
+  {
+    this._x = x;
+    this._y = y;
+  }
+
+  get x ()
+  {
+    return this._x;
+  }
+
+  get y ()
+  {
+    return this._y;
+  }
+
+  moveOnX (incX)
+  {
+    this._x += incX;
+  }
+
+  moveOnY (incY)
+  {
+    this._y += incY;
+  }
+
+  distancia (p)
+  {
+    return Math.sqrt( Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2) ).toFixed(2);
+  }
+
+}
+
+const p1 = new Punto(0,4);
+const p2 = new Punto(3,0);
+
+const p3 = new Algo(5,7);
+
+p1.distancia(p2);
+p2.distancia({x: 20, y: -7});
+
+/* -----------------------------------------------------------------------------------------------Clases (Sintaxis sugar)--------------------------------------------------------------------- */
+
+
+/* --------------------------------------------------------------------------------------------------------------------Prototipos-------------------------------------------------------------- */
+
+/* Funcion constructor del prototipo */
+function Punto (x, y)
+{
+  this.x = x;
+  this.y = y;
+}
+
+/* Las funciones se declaran fuera del constructor para que no sean exclusivas
+de la instancia. Es decir, si declaro la funcion moveOnX dentro del constructor
+de la siguiente manera: this.moveOnX = function moveOnX (inc) {..}, cada instancia
+tendra declarada su propia funcion, y no estaran dentro del prototipo (_proto_).
+El que esten dentro de _proto_ nos permite realizar herencia. Ademas todos los
+objetos dentro de JS tienen el prototype Object.*/
+Punto.prototype.moveOnX = function moveOnX(incX)
+{
+  this.x += incX;
+}
+
+Punto.prototype.moveOnY = function moveOnY(incY)
+{
+  this.y += incY;
+}
+
+Punto.prototype.distancia = function distancia (p)
+{
+  return Math.sqrt( Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2) ).toFixed(2);
+}
+
+const p1 = new Punto(0, 4);
+const p2 = new Punto(3, 0);
+
+p1.distancia(p2);
+p2.distancia({x: 20, y: -7});
+
+/* Al sobrescribir el prototype de un obejeto este se modifica para todos
+los objetos instancias de este. Es decir, en la linea de abajo se esta 
+modificando la funcion moveOnX no solo para p1, sino tambien para p2. */
+p1.__proto__.moveOnX = function () {alert( "Hola!")};
+
+
+/* --------------------------------------------------------------------------------------------------------------------Prototipos-------------------------------------------------------------- */
+
+
+/* --------------------------------------------------------------------------------Objetos----------------------------------------------------------------------------------------------------- */
+
+const Punto =
+{
+  /* Funcion constructor del objeto. Se puede llamar como sea. */
+  init: function (x, y)
+  {
+    this._x = x;
+    this._y = y;
+  },
+  moveOnX: function moveOnX(incX)
+  {
+    this._x = incX;
+  },
+  moveOnY: function moveOnY(incY)
+  {
+    this._y = incY;
+  },
+  distancia: function distancia(p)
+  {
+    return Math.sqrt( Math.pow(this._x - p._x, 2) + Math.pow(this._y - p._y, 2) ).toFixed(2);
+  }
+}
+
+/* Para crear la nueva instancia del objeto se debe crear con Object.crete y
+pasar como parametro el nombre de la delcaracion del objeto. Despues se debe
+ejecutar la funcion constructor. */
+const p1 = Object.create(Punto);
+const p2 = Object.create(Punto);
+
+p1.init(0, 4);
+p2.init(3, 0);
+
+p1.distancia(p2);
+p2.distancia({x: 20, y: -7});
+
+/* --------------------------------------------------------------------------------Objetos----------------------------------------------------------------------------------------------------- */
