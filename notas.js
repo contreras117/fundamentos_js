@@ -432,3 +432,58 @@ p1.distancia(p2);
 p2.distancia({x: 20, y: -7});
 
 /* --------------------------------------------------------------------------------Objetos----------------------------------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------------var y let----------------------------------------------------------------------------------------------------- */
+
+/* La diferencia de usar let y var, es que var sube el escope de la variable a la raiz de la funcion donde se esta declarando.
+Por eso es preferible usar siempre let y no var. */
+function saliuda(){
+  for (let i=0; i<10; i++)
+  {
+    console.log("Hola");
+  }
+  console.log(i); /* Undifined */
+}
+
+/* --------------------------------------------------------------------------------var y let----------------------------------------------------------------------------------------------------- */
+
+
+/* --------------------------------------------------------------------------------Funciones con n parametros y funciones sobre arrays----------------------------------------------------------------------------------------------------- */
+
+/* function suma(...numeros)
+{
+  return numeros.reduce((acum, numero) => 
+  {
+    acum += numero
+    return acum
+  },0)
+} */
+
+
+/* Misma funcion, pero reducida a const y suando arrow functions */
+const suma = (...numeros) => numeros.reduce( (acum, numero) => acum += numero )
+
+/* Reduce es una funcion de todos los elementos array. Recibe una function cond dos parametros. El valor acumulado del recorrido del arreglo, 
+y valor del elemento actual del recorrido del arreglo. */
+
+suma(4,10,83,23,62)
+
+/* function dobles (...numeros)
+{
+  return numeros.map( (numero) => 
+  {
+    numero * 2
+  })
+} */
+
+/* Misma funcion, pero reducida a const y suando arrow functions */
+const dobles = (...numeros) => numeros.map( numero => numero * 2)
+dobles (3,5,10)
+/* Map es una funcion de los array que permite realizar una accion sobre cada elemento del array sin modificarlo el array original. */
+
+
+const pares = (...numeros ) => numeros.filter (numero => numero % 2 == 0 )
+pares (3,6,12,35,67,82)
+/* filter es una funcion de los array que nos permite filtrar los elementos del mismo. Recibe una funcion que se ejecuta sobre cada elemento del arreglo y devuelve true o false. 
+Este valor true o false, determina si el elemento es consercado dentro del arreglo o no. LA funcion filter no modifica el arreglo original, solo devuelve una copia del mismo,
+sin los elemntos filtrados. */
