@@ -435,6 +435,12 @@ p2.distancia({x: 20, y: -7});
 
 /* --------------------------------------------------------------------------------var y let----------------------------------------------------------------------------------------------------- */
 
+/* Si declaramos una variable si var, let o const, se asigna al scope global que en el navegador se llama window. Es algo que se debe evitar a toda costa. Hay que reducir al minimo el scope
+de las variables. */
+nombre = "Daniel"
+console.log(window.nombre)
+
+
 /* La diferencia de usar let y var, es que var sube el escope de la variable a la raiz de la funcion donde se esta declarando.
 Por eso es preferible usar siempre let y no var. */
 function saliuda(){
@@ -479,11 +485,75 @@ suma(4,10,83,23,62)
 /* Misma funcion, pero reducida a const y suando arrow functions */
 const dobles = (...numeros) => numeros.map( numero => numero * 2)
 dobles (3,5,10)
-/* Map es una funcion de los array que permite realizar una accion sobre cada elemento del array sin modificarlo el array original. */
+/* Map es una funcion de los array que permite realizar una accion sobre cada elemento del array sin modificarlo el array original. map siempre retorna 
+un array de la misma longitud del array original*/
 
+
+const imprimir = (...numeros) => numeros.forEach( numero => console.log(numero))
+imprimir (3,5,10)
+/* Foreach es una funcion que tienen los array que permite ejecutar alguna accion con cada elemento del array sin modificar el valor original.
+A diferencia de map, foreach no retorna otro array. */
 
 const pares = (...numeros ) => numeros.filter (numero => numero % 2 == 0 )
 pares (3,6,12,35,67,82)
 /* filter es una funcion de los array que nos permite filtrar los elementos del mismo. Recibe una funcion que se ejecuta sobre cada elemento del arreglo y devuelve true o false. 
 Este valor true o false, determina si el elemento es consercado dentro del arreglo o no. LA funcion filter no modifica el arreglo original, solo devuelve una copia del mismo,
 sin los elemntos filtrados. */
+
+/* --------------------------------------------------------------------------------Funciones con n parametros y funciones sobre arrays----------------------------------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------------Closures----------------------------------------------------------------------------------------------------- */
+
+/* Los closures son funciones qu recuerdan el scope de cuando fueron creadas. Ejemplos abajo */
+
+
+/* Al invcar la funcion saluarFamilia, esta regresa una funcion, que
+recuerda el valor que de apellido que se recibio durante su invocacion */
+const saludarFamilia = apellido => nombre => `Hola ${nombre} ${apellido}`
+
+const saludarGomez = saludarFamilia("Gomez")
+const saludarPerez = saludarFamilia("Perez")
+
+saludarGomez("Luis")
+saludarGomez("Juan")
+
+saludarPerez("Pedro")
+saludarPerez("Ana")
+
+const generarPrefijo = prefijo => palabra => `${prefijo}${palabra}`
+
+const prefijoRe = generarPrefijo("re")
+const prefijoIn = generarPrefijo("in")
+
+prefijoRe("malo")
+prefijoIn("creible")
+
+
+/* --------------------------------------------------------------------------------Closures----------------------------------------------------------------------------------------------------- */
+
+
+/* --------------------------------------------------------------------------------Punto y coma----------------------------------------------------------------------------------------------------- */
+
+/* El ; indica el salto de linea y es opcional en JS, salvo en contados casos donde es necesario para identificar que se trata de una nuvea funcion */
+
+const nombre = "Daniel"
+
+(function saluda()
+{
+  console.log("Hola")
+})()
+
+/* Las funciones invocadas inmediatamente o IIFE, como su nombre lo indica, son funciones que se ejecutan inmediatamente despues de su declaracion y
+son un ejemplo donde se debe usar ; al final de la linea anterior */
+
+const num = 2
+
+[
+  1,
+  4,
+  6
+].forEach(numero => console.log(numero))
+
+/* Otro ejemplo donde es necesario usar ; al final de la linea anterior es al realziar una operacion a un array anonimo */
+
+/* --------------------------------------------------------------------------------Punto y coma----------------------------------------------------------------------------------------------------- */
