@@ -23,14 +23,13 @@ console.log("B")
 
 /* ---------------------------------------------------------------------------------- */
 
-
-/* TO DO */
-
-function get (URL, cb)
+const get = (URL, cb) =>
 { 
+  const METHOD = "GET"
   const xhr = new XMLHttpRequest()
-  xhr.onreadystatechange = function () 
+  xhr.onreadystatechange = function ()
   {
+    console.log(`Estado: ${this.readyState}`)
     const DONE = 4
     const OK = 200
     if (this.readyState === DONE)
@@ -44,27 +43,26 @@ function get (URL, cb)
         cb(new Error(`Se produjo un error al realizar el request: ${this.status}`))
       }
     }
-    xhr.open(`GET`,`${URL}`)
-    xhr.send(null)
   }
+  xhr.open(METHOD,URL)
+  xhr.send(null)
+  console.log("close")
 }
 
-function _handleError (err)
+const _handleError  = (err) =>
 {
   console.log(`Request failed: ${err}`)
 }
 
-get("https://www.swapi.co/api/people/1", function (err, character)
+const getCharacter = ( url, character, cb) => get(`${url}${character}`, cb)
+
+getCharacter("https://www.swapi.co/api/people/",1, (err, character) =>
 {
   if(err) return _handleError(err)
-
-  get(character.homeworld, function (err, homeworld) 
+  get(character.homeworld, (err, homeworld) =>
   {
     if(err) return _handleError(err)
-
     character.homeworld = homeworld
     console.log(`${character.name} nació en ${character.homeworld.name}`)
-
   })
-
 })
