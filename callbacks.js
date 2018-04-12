@@ -66,3 +66,90 @@ getCharacter("https://www.swapi.co/api/people/",1, (err, character) =>
     console.log(`${character.name} nació en ${character.homeworld.name}`)
   })
 })
+
+
+/* ----------------------------------Promesas------------------------------------------------ */
+
+const promise = new Promise( (resolve, reject) => 
+{
+  /* Tarea asincrona */
+  setTimeout( () => {
+    reject(new Error("Se produjo un error"))
+  }, 1000) /* Tiempo para intentar cumplir la promesa */
+})
+
+promise
+  .then( () => {
+
+  })
+  .catch ( (err) => {
+
+  })  
+
+
+
+function get (URL)
+{ 
+  return new Promise( (resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.onreadystatechange = function () 
+    {
+      const DONE = 4
+      const OK = 200
+      if (this.readyState === DONE)
+      {
+        if(this.status === OK)
+        {
+          resolve(JSON.parse(this.responseText))
+        }
+        else
+        {
+          reject(new Error(`Se produjo un error al realizar el request: ${this.status}`))
+        }
+      }
+    }
+    xhr.open(`GET`,`${URL}`)
+    xhr.send(null)
+  })
+}
+
+function _handleError (err)
+{
+  console.log(`Request failed: ${err}`)
+}
+
+const getCharacter = ( url, character) => get(`${url}${character}`)
+
+
+let character;
+getCharacter("https://www.swapi.co/api/people/",1)
+  .then( response => {
+    character = response;
+    return get(character.homeworld)
+  })
+  .then( homeworld => {
+    character.homeworld = homeworld
+    console.log(`${character.name} nació en ${character.homeworld.name}`)
+  })
+  .catch( err => _handleError(err))
+
+
+
+  /* ----------------------------------------------------------------------Fetch------------------------------------------------------------------------ */
+
+  let character;
+  fetch("https://www.swapi.co/api/people/1")
+    .then( response => response.json())
+    .then( json => 
+    {
+      character = json
+      return fetch(character.homeworld)
+    })
+    .then(response => response.json())
+    .then(json => {
+      character.homeworld = json
+      console.log(`${character.name} nació en ${character.homeworld.name}`)
+    })
+    .catch( err => _handleError(err))
+
+  const _handleError = err => console.log(`Request failed: ${err}`)
