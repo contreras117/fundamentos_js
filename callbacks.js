@@ -113,10 +113,7 @@ function get (URL)
   })
 }
 
-function _handleError (err)
-{
-  console.log(`Request failed: ${err}`)
-}
+const _handleError =err => console.log(`Request failed: ${err}`)
 
 const getCharacter = ( url, character) => get(`${url}${character}`)
 
@@ -153,3 +150,27 @@ getCharacter("https://www.swapi.co/api/people/",1)
     .catch( err => _handleError(err))
 
   const _handleError = err => console.log(`Request failed: ${err}`)
+
+
+
+    /* ----------------------------------------------------------------------async/await------------------------------------------------------------------------ */
+
+
+
+    /* Este metodo funcion a partir de ECMAScript 2017. Funciona a vace de detener la ejecucion a la espera de la respuesta. */
+    const _handleError = err => console.log(`Request failed: ${err}`)
+
+    async function getCharacter(chNum){
+      try {
+        const response = await fetch(`https://www.swapi.co/api/people/${chNum}`)
+        const character = await response.json()
+        const responseHomeworld = await fetch(character.homeworld)
+        character.homeworld = await responseHomeworld.json()
+        console.log(`${character.name} nació en ${character.homeworld.name}`)
+      }
+      catch (err) {
+        _handleError(err)
+      }
+    }
+
+    getCharacter(1)
