@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>setInterval</title>
+</head>
+<body>
+	<h1 id="timer">Han pasado 0 segundos</h1>
+
+	<script>
+		const $timer = document.getElementById("timer")
+		let counter = 1
+		setInterval( () => {  //Permite ejecutar una funcion cada intervalo de tiempo especificado
+			//timer.textContent = `Han pasado ${counter} segundos`
+			//timer.textContent = counter == 1 ?  `Ha pasado ${counter} segundo` : `Han pasado ${counter} segundos`
+			$timer.textContent = `Ha${counter != 1 ? 'n' : ''} pasado ${counter} segundo${counter != 1 ? 's' : ''}`
+			counter++;
+			}
+		}, 1000)
+
+
+	</script>
+</body>
+</html>
