@@ -557,3 +557,10 @@ const num = 2
 /* Otro ejemplo donde es necesario usar ; al final de la linea anterior es al realziar una operacion a un array anonimo */
 
 /* --------------------------------------------------------------------------------Punto y coma----------------------------------------------------------------------------------------------------- */
+
+
+/* ------------------------------------------------Callbacks--------------------------------------------------------------- */
+
+/* Pasarle una funcion como parametro o argumento a otra funcion, y que esa funcion se ejecute (de forma sincrona o asincrona), es un callback */
+
+/* Promesas: Son una forma de ejecutar codigo sincrono o asincrono que te devuelve una respuesta si se ejecuto o no */
