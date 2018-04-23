@@ -29,6 +29,7 @@ fibonacciMemo(20) // La funcion se ejecuta 37 veces
 
 const fibonacciIterator = () => {
     let a = 0, b = 1
+    
     return {
         next: () => {
             let f = a 
