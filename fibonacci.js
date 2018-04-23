@@ -25,13 +25,16 @@ fibonacciMemo(20) // La funcion se ejecuta 37 veces
 
 /* Iterador */
 
-/* Manera de hacer que un objeto sea iterable. Es una manera de hacer objetos con elementos infinitos*/
+/* Un objeto es un iterador cuando sabe cómo acceder a los elementos de una colección uno a la vez, mientras mantiene un registro de su posición actual en dicha secuencia. 
+En JavaScript un iterador es un objeto que tiene un método next() el cual devuelve el siguiente elemento en una secuencia. Este método devuelve un objeto con dos propiedades: 
+done y value.*/
 
 const fibonacciIterator = () => {
     let a = 0, b = 1
     
     return {
-        next: () => {
+        next: (reset) => {
+            if (reset) a = 0, b = 1
             let f = a 
             a = b
             b = f + a
@@ -54,8 +57,6 @@ for (let value of fibo) {
     if (i >= 20) break
 }
 
-
-
 fibo.next() //0
 fibo.next() //1
 fibo.next() //1
@@ -63,3 +64,45 @@ fibo.next() //2
 fibo.next() //3
 fibo.next() //5
 fibo.next() //8
+
+
+/* Generador */
+
+/* Un generador es una funcion que devuelve un valor y al volver a ser llamada continua su ejecuncion en el punto donde se quedo la ultima vez*/
+
+/* Para declarar un generator se debe poner un "*" despues de la palabra function */
+function* fibonacciGenerator() {
+    let a = 0, b = 1, counter = 0
+
+    
+    while (counter < 5){
+        let f = a 
+        a = b
+        b = f + a
+        counter++
+        /* La parabra reservada "yield" solo puede ser usada dentro de los generadores y al igual que return devuelve un objeto, pero ademas cuando vuelve a ser llamado el metodo next, 
+        el codigo continua su ejecucion en ese punto. Ademas permite resivir parametro dentro de la funcion next y asignarlos a otras variables. */
+        /* La palabra yield al igual que los iteradores devuelve un objeto con dos propiedades, value y done. Mientras el codigo dentro de la funcion* aun no haya termiando, done sera false.
+        Mientras que value es el objeto despues de la palabra yield */
+        let reset = yield f;
+        if (reset) a=0, b=1
+    }
+}
+
+fibo = fibonacciGenerator()
+
+fibo.next() //0
+fibo.next() //1
+fibo.next() //1
+fibo.next() //2
+fibo.next() //3
+fibo.next() //Done: true, por que ya se generaron cinco valores y el ciclo while termino
+
+
+fibo.next(true)//0
+fibo.next() //1
+fibo.next() //1
+fibo.next() //2
+fibo.next() //3
+fibo.next() //5
+
