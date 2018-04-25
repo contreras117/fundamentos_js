@@ -96,7 +96,7 @@ fibo.next() //1
 fibo.next() //1
 fibo.next() //2
 fibo.next() //3
-fibo.next() //Done: true, por que ya se generaron cinco valores y el ciclo while termino
+fibo.next() //Done: true, por que ya se generaron cinco valores y el ciclo while termino. Value: Undefined
 
 
 fibo.next(true)//0
@@ -106,3 +106,7 @@ fibo.next() //2
 fibo.next() //3
 fibo.next() //5
 
+let a = 4
+let b = '4'
+if (a == b) console.log("verdadero")
+else console.log("falso")
