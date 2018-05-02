@@ -1,0 +1,33 @@
+body{
+	background: black;
+	color: white;
+	display: flex;
+	font-family: Arial;
+	font-size: 2em;
+	height: 100vh;
+	margin: 0;
+}
+
+.keyboard{
+	margin: auto;
+}
+
+.row{
+	display: flex;
+	justify-content: center;
+}
+
+.key{
+	border-radius: 5px;
+	border: 2px solid white;
+	height: 100px;
+	line-height: 100px;
+	margin: 10px 10px;
+	text-align: center;
+	width: 100px;
+}
+
+.clicked{
+	background: white;
+	color: #40D46A;
+}
