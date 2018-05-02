@@ -12,11 +12,13 @@ const despertar = () => {
     },DESPERTAR)
   })
 }
+
 const vestir = msg => {
   $agenda.textContent = msg
    return new Promise ((resolve, reject) => {
     setTimeout(() => {
       reject('No hay comida!!!')
+      /* resolve('Ahora estoy desayunando...') */
     },VESTIRSE)
   })
 }
@@ -40,7 +42,7 @@ const conducir = msg => {
 }
 
 const trabajar = msg => {
-  $agenda.textContent = msg
+  $agenda.textContent = msg 
    return new Promise ((resolve, reject) => {
     setTimeout(() => {
       resolve('Ya me voy al GYM!!!...')
@@ -51,14 +53,24 @@ const trabajar = msg => {
 const falsePromise = err => {
   setTimeout(() => {
     $agenda.style.color = "red"
-    $agenda.textContent = err
+    $agenda.textContent = err + "5"
   }, 4000);
 }
+
+/* despertar()
+.then(vestir)
+.then(desayunar)
+.then(conducir)
+.then(trabajar)
+.then( (msg) => {$agenda.textContent = msg}) */
 
 despertar()
 .then(vestir)
 .then(desayunar)
-.catch(falsePromise)
-.then(desayunar)
 .then(conducir)
+.then(trabajar)
 .then( (msg) => {$agenda.textContent = msg})
+.catch(falsePromise)
+
+
+/* .catch(falsePromise) */
