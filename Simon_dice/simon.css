@@ -27,12 +27,18 @@ body{
 	width: 100px;
 }
 
-.success{
+.key.active{
 	background: white;
-	color: #40D46A;
+	color: black;
 }
 
-.fail{
-	background: white;
+.key.success{
+	color: #40D46A;
+	border-color: #40D46A;
+}
+
+.key.fail{
 	color: lightcoral;
+	border-color: lightcoral;
+
 }

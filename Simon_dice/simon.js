@@ -1,61 +1,70 @@
 const NIVELES = 15
+const TIMEOUT = 1000
 
-class Key {
-	constructor(id){
-		this.$key = document.getElementById(id)
-		this.events()
+
+
+const siguienteNivel = nivelActual => {
+
+	if(nivelActual == NIVELES){
+		return alert('Ganaste. Eres el mejor!!!')
 	}
-	events(){
-		this.$key.addEventListener("mousedown", ()=> {
-			this.$key.classList.add("clicked")
-		})
-		this.$key.addEventListener("mouseup", ()=> {
-			this.$key.classList.remove("clicked")
-			string += this.$key.id
-		})
+
+	alert(`Nivel ${nivelActual}`)
+
+	const teclas = generarTeclas(nivelActual)
+	for (let i = 0; i < nivelActual; i++){
+		setTimeout(() => activate(teclas[i]), TIMEOUT * i); 
+	}
+
+	let i = 0
+	window.addEventListener('keydown', onKeyDown)
+
+	function onKeyDown(ev){
+		if(teclas[i] == ev.keyCode){
+			activate(ev.keyCode, {success: true})
+			i++
+			if(i == nivelActual){
+				window.removeEventListener('keydown',onKeyDown)
+				setTimeout(() => siguienteNivel(nivelActual+1), TIMEOUT);
+			}
+		}
+		else{
+			activate(ev.keyCode, {fail: true})
+			window.removeEventListener('keydown',onKeyDown)
+			
+		}
 	}
 }
 
-const Q = new Key("q")
-const W = new Key("w")
-const E = new Key("e")
-const R = new Key("r")
-const T = new Key("t")
-const Y = new Key("y")
-const U = new Key("u")
-const I = new Key("i")
-const O = new Key("o")
-const P = new Key("p")
-const A = new Key("a")
-const S = new Key("s")
-const D = new Key("d")
-const F = new Key("f")
-const G = new Key("g")
-const H = new Key("h")
-const J = new Key("j")
-const K = new Key("k")
-const L = new Key("l")
-const Z = new Key("z")
-const X = new Key("x")
-const C = new Key("c")
-const V = new Key("v")
-const B = new Key("b")
-const N = new Key("n")
-const M = new Key("m")
+const generarTeclas = num => {
+	return new Array(num).fill(0).map(generarTeclaAleatoria)
+}
 
+const generarTeclaAleatoria = () => {
+	const MIN = 65
+	const MAX = 90
+	return Math.round(Math.random() * (MAX - MIN) + MIN)
+}
 
-document.addEventListener("keydown",(e)=> {
-	const key = document.getElementById(e.key)
-	if(key != null){
-		key.classList.add("clicked")
+const activate = (teclaActual, opts = {}) => {
+	const el = getElementByKeyCode(teclaActual)
+	el.classList.add('active')
+	if(opts.success){
+		console.log(`Clase agregada`)
+		el.classList.add('success')
+	} else if (opts.fail){
+		el.classList.add('fail')
+		alert("Perdiste. Imbecil!!!")
 	}
-})
+	setTimeout(() => deactivate(el), TIMEOUT);
+}
 
-document.addEventListener("keyup",(e)=> {
-	const key = document.getElementById(e.key)
-	if(key != null){
-		key.classList.remove("clicked")
-		string += e.key
-		console.log(string)
-	}
-})
+const deactivate = el => {
+	el.className = 'key'
+}
+
+const getElementByKeyCode = keyCode => {
+	return document.querySelector(`[data-key="${keyCode}"]`)
+}
+
+siguienteNivel(5)
