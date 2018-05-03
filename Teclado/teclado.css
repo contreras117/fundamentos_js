@@ -27,12 +27,7 @@ body{
 	width: 100px;
 }
 
-.success{
+.clicked{
 	background: white;
 	color: #40D46A;
-}
-
-.fail{
-	background: white;
-	color: lightcoral;
 }

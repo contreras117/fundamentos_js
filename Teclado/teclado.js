@@ -1,4 +1,4 @@
-const NIVELES = 15
+let string = "";
 
 class Key {
 	constructor(id){
