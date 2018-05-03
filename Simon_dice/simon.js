@@ -1,10 +1,17 @@
 const NIVELES = 15
-const TIMEOUT = 1000
+const ASCII_A = 65
+const ASCII_Z = 90
+const TIMEIN = 500
+const TIMEOUT = 500
+const $START = document.getElementById("start")
 
-
+$START.addEventListener("click", () => { 
+	siguienteNivel(1)
+})
 
 const siguienteNivel = nivelActual => {
 
+	$START.classList.add("hidden")
 	if(nivelActual == NIVELES){
 		return alert('Ganaste. Eres el mejor!!!')
 	}
@@ -13,27 +20,52 @@ const siguienteNivel = nivelActual => {
 
 	const teclas = generarTeclas(nivelActual)
 	for (let i = 0; i < nivelActual; i++){
-		setTimeout(() => activate(teclas[i]), TIMEOUT * i); 
+		setTimeout(() => {
+			 activate(teclas[i])
+			 setTimeout(() => deactivate(teclas[i]), TIMEOUT);
+		}, (TIMEIN + TIMEOUT) * i);
 	}
 
 	let i = 0
 	window.addEventListener('keydown', onKeyDown)
+	window.addEventListener('keyup',onKeyUp)
 
+		
 	function onKeyDown(ev){
-		if(teclas[i] == ev.keyCode){
-			activate(ev.keyCode, {success: true})
-			i++
-			if(i == nivelActual){
-				window.removeEventListener('keydown',onKeyDown)
-				setTimeout(() => siguienteNivel(nivelActual+1), TIMEOUT);
+		if(isLetterKey(ev.keyCode)){
+			if(teclas[i] == ev.keyCode){
+				activate(ev.keyCode, {success: true})
 			}
-		}
-		else{
-			activate(ev.keyCode, {fail: true})
+			else{
+				activate(ev.keyCode, {fail: true})
+			}
 			window.removeEventListener('keydown',onKeyDown)
-			
 		}
 	}
+
+	function onKeyUp(ev){
+		if(isLetterKey(ev.keyCode)){
+			if(teclas[i] == ev.keyCode){
+				deactivate(ev.keyCode)
+				i++
+				if(i == nivelActual){
+					window.removeEventListener('keyup',onKeyUp)
+					siguienteNivel(nivelActual+1)
+				}
+				else window.addEventListener('keydown', onKeyDown)
+			}
+			else{
+				deactivate(ev.keyCode)
+				window.removeEventListener('keyup',onKeyUp)
+				$START.classList.remove("hidden")
+				return alert("Perdiste Imbecil!!")
+			}
+		}
+	}
+}
+
+const isLetterKey = key =>{
+	return key >= ASCII_A && key <= ASCII_Z
 }
 
 const generarTeclas = num => {
@@ -41,25 +73,21 @@ const generarTeclas = num => {
 }
 
 const generarTeclaAleatoria = () => {
-	const MIN = 65
-	const MAX = 90
-	return Math.round(Math.random() * (MAX - MIN) + MIN)
+	return Math.round(Math.random() * (ASCII_Z - ASCII_A) + ASCII_A)
 }
 
-const activate = (teclaActual, opts = {}) => {
-	const el = getElementByKeyCode(teclaActual)
+const activate = (key, opts = {}) => {
+	const el = getElementByKeyCode(key)
 	el.classList.add('active')
 	if(opts.success){
-		console.log(`Clase agregada`)
 		el.classList.add('success')
 	} else if (opts.fail){
 		el.classList.add('fail')
-		alert("Perdiste. Imbecil!!!")
 	}
-	setTimeout(() => deactivate(el), TIMEOUT);
 }
 
-const deactivate = el => {
+const deactivate = key => {
+	const el = getElementByKeyCode(key)
 	el.className = 'key'
 }
 
@@ -67,4 +95,3 @@ const getElementByKeyCode = keyCode => {
 	return document.querySelector(`[data-key="${keyCode}"]`)
 }
 
-siguienteNivel(5)
