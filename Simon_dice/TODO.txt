@@ -1,0 +1,5 @@
+Agregar touch y mouse
+responsive design
+Niveles de dificultad (velocidad e invertido)
+Analizar replantear codigo
+Botones de dificultad en sweet alert

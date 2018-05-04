@@ -1,82 +1,128 @@
 const NIVELES = 15
 const ASCII_A = 65
 const ASCII_Z = 90
-const TIMEIN = 500
 const TIMEOUT = 500
 const $START = document.getElementById("start")
+let teclas
 
 $START.addEventListener("click", () => { 
-	siguienteNivel(1)
+	play()
 })
 
-const siguienteNivel = nivelActual => {
+function siguienteNivel (nivelActual) {
 
 	$START.classList.add("hidden")
-	if(nivelActual == NIVELES){
-		return alert('Ganaste. Eres el mejor!!!')
+	$START.disabled = "true"
+	if(nivelActual > NIVELES){
+		return swal({
+			title: `Ganaste`,
+			text: `¿Quieres jugar de nuevo?`,
+			icon: `success`,
+			buttons: ["No gracias", "Claro!"]
+		})
+		.then(repeat => {
+			if(repeat){
+				play()
+			}
+			else
+			{
+				swal({
+					title: `Adios`,
+					text: `Que lastima!!!`,
+					icon: `error`
+				})
+			}
+		})
 	}
 
-	alert(`Nivel ${nivelActual}`)
+	swal({
+		title: `Nivel ${nivelActual} / ${NIVELES}`,
+		icon: `info`,
+		buttons: false,
+		timer: 1000
 
-	const teclas = generarTeclas(nivelActual)
-	for (let i = 0; i < nivelActual; i++){
-		setTimeout(() => {
-			 activate(teclas[i])
-			 setTimeout(() => deactivate(teclas[i]), TIMEOUT);
-		}, (TIMEIN + TIMEOUT) * i);
-	}
-
-	let i = 0
-	window.addEventListener('keydown', onKeyDown)
-	window.addEventListener('keyup',onKeyUp)
-
-		
-	function onKeyDown(ev){
-		if(isLetterKey(ev.keyCode)){
-			if(teclas[i] == ev.keyCode){
-				activate(ev.keyCode, {success: true})
-			}
-			else{
-				activate(ev.keyCode, {fail: true})
-			}
-			window.removeEventListener('keydown',onKeyDown)
+	})
+	.then(()=>{
+		for (let i = 0; i < nivelActual; i++){
+			console.log("")
+			setTimeout(() => {
+				 activate(teclas[i])
+				 setTimeout(() => deactivate(teclas[i]), TIMEOUT);
+			}, TIMEOUT * 2 * i + TIMEOUT)
 		}
-	}
-
-	function onKeyUp(ev){
-		if(isLetterKey(ev.keyCode)){
-			if(teclas[i] == ev.keyCode){
-				deactivate(ev.keyCode)
-				i++
-				if(i == nivelActual){
-					window.removeEventListener('keyup',onKeyUp)
-					siguienteNivel(nivelActual+1)
+	
+		let i = 0
+		window.addEventListener('keydown', onKeyDown)
+		window.addEventListener('keyup',onKeyUp)
+	
+			
+		function onKeyDown(ev){
+			if(isLetterKey(ev.keyCode)){
+				if(teclas[i] == ev.keyCode){
+					activate(ev.keyCode, {success: true})
 				}
-				else window.addEventListener('keydown', onKeyDown)
-			}
-			else{
-				deactivate(ev.keyCode)
-				window.removeEventListener('keyup',onKeyUp)
-				$START.classList.remove("hidden")
-				return alert("Perdiste Imbecil!!")
+				else{
+					activate(ev.keyCode, {fail: true})
+				}
+				window.removeEventListener('keydown',onKeyDown)
 			}
 		}
-	}
+	
+		function onKeyUp(ev){
+			if(isLetterKey(ev.keyCode)){
+				if(teclas[i] == ev.keyCode){
+					deactivate(ev.keyCode)
+					i++
+					if(i == nivelActual){
+						window.removeEventListener('keyup',onKeyUp)
+						siguienteNivel(nivelActual+1)
+					}
+					else window.addEventListener('keydown', onKeyDown)
+				}
+				else{
+					deactivate(ev.keyCode)
+					window.removeEventListener('keyup',onKeyUp)
+					$START.classList.remove("hidden")
+					$START.disabled = "false"
+					return swal({
+						title: `Perdiste`,
+						text: `¿Quieres jugar de nuevo?`,
+						icon: `error`,
+						buttons: ["No gracias", "Claro!"]
+					})
+					.then(repeat => {
+						if(repeat){
+							play()
+						}
+						else
+						{
+							swal({
+								title: `Adios`,
+								text: `Que lastima!!!`,
+								icon: `error`
+							})
+						}
+					})
+				}
+			}
+		}
+	})
+
 }
 
-const isLetterKey = key =>{
+function isLetterKey(key){
 	return key >= ASCII_A && key <= ASCII_Z
 }
 
-const generarTeclas = num => {
+function generarTeclas (num) {
 	return new Array(num).fill(0).map(generarTeclaAleatoria)
 }
 
-const generarTeclaAleatoria = () => {
+function generarTeclaAleatoria(){
 	return Math.round(Math.random() * (ASCII_Z - ASCII_A) + ASCII_A)
 }
 
-const activate = (key, opts = {}) => {
+function activate (key, opts = {}) {
 	const el = getElementByKeyCode(key)
 	el.classList.add('active')
 	if(opts.success){
@@ -86,12 +132,16 @@ const activate = (key, opts = {}) => {
 	}
 }
 
-const deactivate = key => {
+function deactivate (key){
 	const el = getElementByKeyCode(key)
 	el.className = 'key'
 }
 
-const getElementByKeyCode = keyCode => {
+function getElementByKeyCode (keyCode) {
 	return document.querySelector(`[data-key="${keyCode}"]`)
-}
+} 
 
+function play() {
+	teclas = generarTeclas(NIVELES)
+	siguienteNivel(1)
+}
