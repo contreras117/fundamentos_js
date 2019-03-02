@@ -564,3 +564,15 @@ const num = 2
 /* Pasarle una funcion como parametro o argumento a otra funcion, y que esa funcion se ejecute (de forma sincrona o asincrona), es un callback */
 
 /* Promesas: Son una forma de ejecutar codigo sincrono o asincrono que te devuelve una respuesta si se ejecuto o no */
+
+
+
+
+/* Debug: para debugear el codigo de usa la palabra "debugger" como punto de interrupcion, y al ejecutar el codigo en el navegador con la consola abierta, la ejecucion de este se detendra cuando
+llege a ese punto. */
+
+let i =2
+while(i > 1){
+  debugger
+  console.log(`el valor de i sigue siendo ${i}`)
+}

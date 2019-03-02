@@ -22,3 +22,10 @@ function birthday(person){
         age: person.age + 1
     }
 }
+
+
+function mayorDeEdad(person){
+    if(person.age >= 18){
+        console.log(`${person.name} es mayor de edad`)
+    }
+}
