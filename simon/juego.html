@@ -92,6 +92,7 @@
       <div id="verde" class="color verde right" data-color="verde"></div>
       <button id="btnEmpezar" class="btn-start" onclick="empezarJuego()">Empezar a jugar!</button>
     </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
       const celeste = document.getElementById('celeste')
       const violeta = document.getElementById('violeta')
@@ -109,7 +110,7 @@
         }
 
         inicializar() {
-          btnEmpezar.classList.add('hide')
+          this.togleClassBoton()
           this.nivel = 1
           this.colores = {
               celeste,
@@ -120,6 +121,11 @@
 
           this.elegirColor = this.elegirColor.bind(this)
           this.siguienteNivel = this.siguienteNivel.bind(this)
+          this.inicializar = this.inicializar.bind(this)
+        }
+
+        togleClassBoton(){
+          btnEmpezar.classList.toggle('hide')
         }
 
         generarSecuencia(){
@@ -127,19 +133,23 @@
         }
 
         siguienteNivel(){
-            this.subnivel = 0
-            this.iluminarSecuencia()
-            this.agregarEventosClick()
+            swal("Simon Dice",`Nivel ${this.nivel}`,"info")
+              .then(() => {
+                this.subnivel = 0
+                this.iluminarSecuencia()
+              })
         }
 
         iluminarSecuencia(){
             for(let i=0; i < this.nivel; i++){
                 const color = this.transformarNumeroAColor(this.secuencia[i])
-                
                 setTimeout(() => {
                     this.iluminar(color)
                 }, i * 1000)
             }
+            setTimeout(() => {
+              this.agregarEventosClick()
+            }, this.nivel * 1000);
         }
         
         transformarNumeroAColor(n){
@@ -191,9 +201,6 @@
             this.colores.violeta.removeEventListener('click', this.elegirColor)
             this.colores.naranja.removeEventListener('click', this.elegirColor)
             this.colores.verde.removeEventListener('click', this.elegirColor)
-            console.log(this.colores.verde)
-            debugger
-            console.log(this.colores.violeta)
         }
 
         elegirColor(ev){
@@ -207,15 +214,28 @@
                     this.nivel++
                     this.removerEventosClick()
                     if(this.nivel === ULTIMO_NIVEL + 1){
-                        console.log("Ganaste")
+                        this.ganarJuego()
                     }
                     console.log("Siguiente Nivel")
                     setTimeout(this.siguienteNivel, TIEMPO_ENTRE_NIVELES);
                 }
             }
             else{
-                console.log("Perdiste")
+                this.perderJuego()
             }
+        }
+
+        ganarJuego(){
+          swal("Felicidades","Ganaste el juego","success")
+            .then(this.inicializar)
+        }
+
+        perderJuego(){
+          swal("Perdedor", "Perdiste el juego", "error")
+            .then( ()=>{
+              this.removerEventosClick()
+              this.inicializar()
+            })
         }
 
       }
