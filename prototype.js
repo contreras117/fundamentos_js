@@ -25,3 +25,17 @@ daniel.soyAlto()
 // }
 
 // Persona.prototype.soyAlto = () =>  this.altura > 1.8
+
+function adjacentElementsProduct(inputArray) {
+    debugger
+    let productos = []
+    for(let i = 0; i<inputArray.length-1; i++){
+        productos.push(inputArray[i] * inputArray[i+1])
+    }
+    let max = Math.max(productos)
+    return max
+}
+
+adjacentElementsProduct([3,6,-2,-5,7,3])
+
+
